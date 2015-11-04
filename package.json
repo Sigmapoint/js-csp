@@ -51,7 +51,7 @@
   },
   "main": "./dist/csp.js",
   "files": [
-    "src",
+    "dist",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"
