@@ -1,8 +1,10 @@
 "use strict";
 
+function _instanceof(left, right) { if (right != null && right[Symbol.hasInstance]) { return right[Symbol.hasInstance](left); } else { return left instanceof right; } }
+
 var Box = require("./channels").Box;
 
-var AltHandler = function (flag, f) {
+var AltHandler = function AltHandler(flag, f) {
   this.f = f;
   this.flag = flag;
 };
@@ -20,7 +22,7 @@ AltHandler.prototype.commit = function () {
   return this.f;
 };
 
-var AltResult = function (value, channel) {
+var AltResult = function AltResult(value, channel) {
   this.value = value;
   this.channel = channel;
 };
@@ -46,7 +48,7 @@ function random_array(n) {
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 var DEFAULT = {
-  toString: function () {
+  toString: function toString() {
     return "[object DEFAULT]";
   }
 };
@@ -70,7 +72,7 @@ exports.do_alts = function (operations, callback, options) {
     var operation = operations[priority ? i : indexes[i]];
     var port, result;
     // XXX Hmm
-    if (operation instanceof Array) {
+    if (_instanceof(operation, Array)) {
       var value = operation[1];
       port = operation[0];
       // We wrap this in a function to capture the value of "port",
@@ -92,13 +94,13 @@ exports.do_alts = function (operations, callback, options) {
       })(port));
     }
     // XXX Hmm
-    if (result instanceof Box) {
+    if (_instanceof(result, Box)) {
       callback(new AltResult(result.value, port));
       break;
     }
   }
 
-  if (!(result instanceof Box) && options && hasOwnProperty.call(options, "default")) {
+  if (!_instanceof(result, Box) && options && hasOwnProperty.call(options, "default")) {
     if (flag.value) {
       flag.value = false;
       callback(new AltResult(options["default"], DEFAULT));

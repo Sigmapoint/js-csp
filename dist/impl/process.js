@@ -1,12 +1,14 @@
 "use strict";
 
+function _instanceof(left, right) { if (right != null && right[Symbol.hasInstance]) { return right[Symbol.hasInstance](left); } else { return left instanceof right; } }
+
 var dispatch = require("./dispatch");
 var select = require("./select");
 var Channel = require("./channels").Channel;
 
 var NO_VALUE = {};
 
-var FnHandler = function (blockable, f) {
+var FnHandler = function FnHandler(blockable, f) {
   this.f = f;
   this.blockable = blockable;
 };
@@ -37,14 +39,14 @@ function take_then_callback(channel, callback) {
   }
 }
 
-var Process = function (gen, onFinish, creator) {
+var Process = function Process(gen, onFinish, creator) {
   this.gen = gen;
   this.creatorFunc = creator;
   this.finished = false;
   this.onFinish = onFinish;
 };
 
-var Instruction = function (op, data) {
+var Instruction = function Instruction(op, data) {
   this.op = op;
   this.data = data;
 };
@@ -93,7 +95,7 @@ Process.prototype.run = function (response) {
   var ins = iter.value;
   var self = this;
 
-  if (ins instanceof Instruction) {
+  if (_instanceof(ins, Instruction)) {
     switch (ins.op) {
       case PUT:
         var data = ins.data;
@@ -122,7 +124,7 @@ Process.prototype.run = function (response) {
         }, ins.data.options);
         break;
     }
-  } else if (ins instanceof Channel) {
+  } else if (_instanceof(ins, Channel)) {
     var channel = ins;
     take_then_callback(channel, function (value) {
       self._continue(value);

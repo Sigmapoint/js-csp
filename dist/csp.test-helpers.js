@@ -11,10 +11,22 @@ var it = mocha.it;
 
 function identity_chan(x) {
   var ch = chan(1);
-  go(function* () {
-    yield put(ch, x);
-    ch.close();
-  });
+  go(regeneratorRuntime.mark(function _callee() {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          _context.next = 2;
+          return put(ch, x);
+
+        case 2:
+          ch.close();
+
+        case 3:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee, this);
+  }));
   return ch;
 }
 
@@ -38,15 +50,33 @@ function g(f) {
 };
 
 function gg(f) {
-  return g(function* (done) {
-    try {
-      var ch = go(f, []);
-      yield take(ch);
-      done();
-    } catch (e) {
-      done(e);
-    }
-  });
+  return g(regeneratorRuntime.mark(function _callee2(done) {
+    var ch;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.prev = 0;
+          ch = go(f, []);
+          _context2.next = 4;
+          return take(ch);
+
+        case 4:
+          done();
+          _context2.next = 10;
+          break;
+
+        case 7:
+          _context2.prev = 7;
+          _context2.t0 = _context2["catch"](0);
+
+          done(_context2.t0);
+
+        case 10:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2, this, [[0, 7]]);
+  }));
 }
 
 module.exports = {
@@ -58,23 +88,23 @@ module.exports = {
   // f must be a generator function. For now assertions should be inside f's
   // top-level, not functions f may call (that works but a failing test
   // may break following tests).
-  it: function (desc, f) {
+  it: function it(desc, f) {
     return mocha.it(desc, gg(f));
   },
 
-  beforeEach: function (f) {
+  beforeEach: function beforeEach(f) {
     return mocha.beforeEach(gg(f));
   },
 
-  afterEach: function (f) {
+  afterEach: function afterEach(f) {
     return mocha.afterEach(gg(f));
   },
 
-  before: function (f) {
+  before: function before(f) {
     return mocha.before(gg(f));
   },
 
-  after: function (f) {
+  after: function after(f) {
     return mocha.after(gg(f));
   }
 };

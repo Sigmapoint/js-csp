@@ -16,12 +16,12 @@ function acopy(src, src_start, dst, dst_start, length) {
 }
 
 var EMPTY = {
-  toString: function () {
+  toString: function toString() {
     return "[object EMPTY]";
   }
 };
 
-var RingBuffer = function (head, tail, length, array) {
+var RingBuffer = function RingBuffer(head, tail, length, array) {
   this.length = length;
   this.array = array;
   this.head = head;
@@ -92,7 +92,7 @@ RingBuffer.prototype.cleanup = function (predicate) {
   }
 };
 
-var FixedBuffer = function (buf, n) {
+var FixedBuffer = function FixedBuffer(buf, n) {
   this.buf = buf;
   this.n = n;
 };
@@ -115,7 +115,7 @@ FixedBuffer.prototype.count = function () {
   return this.buf.length;
 };
 
-var DroppingBuffer = function (buf, n) {
+var DroppingBuffer = function DroppingBuffer(buf, n) {
   this.buf = buf;
   this.n = n;
 };
@@ -138,7 +138,7 @@ DroppingBuffer.prototype.count = function () {
   return this.buf.length;
 };
 
-var SlidingBuffer = function (buf, n) {
+var SlidingBuffer = function SlidingBuffer(buf, n) {
   this.buf = buf;
   this.n = n;
 };

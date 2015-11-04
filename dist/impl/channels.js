@@ -8,16 +8,16 @@ var MAX_QUEUE_SIZE = 1024;
 
 var CLOSED = null;
 
-var Box = function (value) {
+var Box = function Box(value) {
   this.value = value;
 };
 
-var PutBox = function (handler, value) {
+var PutBox = function PutBox(handler, value) {
   this.handler = handler;
   this.value = value;
 };
 
-var Channel = function (takes, puts, buf, xform) {
+var Channel = function Channel(takes, puts, buf, xform) {
   this.buf = buf;
   this.xform = xform;
   this.takes = takes;
@@ -287,14 +287,14 @@ AddTransformer.prototype["@@transducer/step"] = function (buffer, input) {
 function handleException(exHandler) {
   return function (xform) {
     return {
-      "@@transducer/step": function (buffer, input) {
+      "@@transducer/step": function transducerStep(buffer, input) {
         try {
           return xform["@@transducer/step"](buffer, input);
         } catch (e) {
           return handleEx(buffer, exHandler, e);
         }
       },
-      "@@transducer/result": function (buffer) {
+      "@@transducer/result": function transducerResult(buffer) {
         try {
           return xform["@@transducer/result"](buffer);
         } catch (e) {
