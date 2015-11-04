@@ -29,7 +29,9 @@
     "email": "ubolonton@gmail.com",
     "url": "https://github.com/ubolonton/js-csp/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "babel-polyfill": "^6.0.16"
+  },
   "devDependencies": {
     "babel": "^6.0.15",
     "babel-cli": "^6.1.1",

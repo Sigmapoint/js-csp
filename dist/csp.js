@@ -1,5 +1,7 @@
 "use strict";
 
+require('babel-polyfill');
+
 var csp = require("./csp.core");
 var operations = require("./csp.operations");
 var pipeline = require('./csp.pipeline');
